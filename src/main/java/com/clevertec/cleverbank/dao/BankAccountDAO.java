@@ -38,15 +38,7 @@ public class BankAccountDAO implements DAOInterface<BankAccount> {
             ResultSet resultSet = statement.executeQuery(SQL);
 
             while(resultSet.next()) {
-                BankAccount bankAccount = new BankAccount();
-
-                bankAccount.setId(resultSet.getInt("account_id"));
-                bankAccount.setName(resultSet.getString("account_name"));
-                bankAccount.setBank_id(resultSet.getInt("account_bank_id"));
-                bankAccount.setUser_id(resultSet.getInt("account_user_id"));
-                bankAccount.setDateOfOpen(resultSet.getDate("account_date_of_open"));
-                bankAccount.setValue(resultSet.getInt("account_value"));
-
+                BankAccount bankAccount = setFieldsFromDB(resultSet);
                 bankAccounts.add(bankAccount);
             }
 
@@ -67,19 +59,45 @@ public class BankAccountDAO implements DAOInterface<BankAccount> {
             ResultSet resultSet = statement.executeQuery(SQL);
 
             while(resultSet.next()) {
-
-                bankAccount.setId(resultSet.getInt("account_id"));
-                bankAccount.setName(resultSet.getString("account_name"));
-                bankAccount.setBank_id(resultSet.getInt("account_bank_id"));
-                bankAccount.setUser_id(resultSet.getInt("account_user_id"));
-                bankAccount.setDateOfOpen(resultSet.getDate("account_date_of_open"));
-                bankAccount.setValue(resultSet.getInt("account_value"));
-
+                bankAccount = setFieldsFromDB(resultSet);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return bankAccount;
+    }
+
+    public BankAccount findByName(String name) {
+        BankAccount bankAccount = new BankAccount();
+
+        try {
+            Statement statement = connection.createStatement();
+            String SQL = "SELECT * FROM Bank_Account WHERE account_name = '" + name + "'";
+            ResultSet resultSet = statement.executeQuery(SQL);
+
+            while(resultSet.next()) {
+                bankAccount = setFieldsFromDB(resultSet);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return bankAccount;
+    }
+
+    @Override
+    public BankAccount setFieldsFromDB(ResultSet resultSet) throws SQLException {
+        BankAccount bankAccount = new BankAccount();
+
+        bankAccount.setId(resultSet.getInt("account_id"));
+        bankAccount.setName(resultSet.getString("account_name"));
+        bankAccount.setBank_id(resultSet.getInt("account_bank_id"));
+        bankAccount.setUser_id(resultSet.getInt("account_user_id"));
+        bankAccount.setDateOfOpen(resultSet.getDate("account_date_of_open"));
+        bankAccount.setValue(resultSet.getInt("account_value"));
 
         return bankAccount;
     }

@@ -38,17 +38,7 @@ public class BankTransactionDAO implements DAOInterface<BankTransaction> {
             ResultSet resultSet = statement.executeQuery(SQL);
 
             while(resultSet.next()) {
-                BankTransaction bankTransaction = new BankTransaction();
-
-                bankTransaction.setId(resultSet.getInt("transaction_id"));
-                bankTransaction.setType(resultSet.getString("transaction_type"));
-                bankTransaction.setBankSenderId(resultSet.getInt("transaction_bank_sender_id"));
-                bankTransaction.setBankRecipientId(resultSet.getInt("transaction_bank_recipient_id"));
-                bankTransaction.setAccountSenderId(resultSet.getInt("transaction_account_sender_id"));
-                bankTransaction.setAccountRecipientId(resultSet.getInt("transaction_account_recipient_id"));
-                bankTransaction.setDate(resultSet.getDate("transaction_date"));
-                bankTransaction.setValue(resultSet.getInt("transaction_value"));
-
+                BankTransaction bankTransaction = setFieldsFromDB(resultSet);
                 bankTransactions.add(bankTransaction);
             }
 
@@ -69,16 +59,7 @@ public class BankTransactionDAO implements DAOInterface<BankTransaction> {
             ResultSet resultSet = statement.executeQuery(SQL);
 
             while(resultSet.next()) {
-
-                bankTransaction.setId(resultSet.getInt("transaction_id"));
-                bankTransaction.setType(resultSet.getString("transaction_type"));
-                bankTransaction.setBankSenderId(resultSet.getInt("transaction_bank_sender_id"));
-                bankTransaction.setBankRecipientId(resultSet.getInt("transaction_bank_recipient_id"));
-                bankTransaction.setAccountSenderId(resultSet.getInt("transaction_account_sender_id"));
-                bankTransaction.setAccountRecipientId(resultSet.getInt("transaction_account_recipient_id"));
-                bankTransaction.setDate(resultSet.getDate("transaction_date"));
-                bankTransaction.setValue(resultSet.getInt("transaction_value"));
-
+                bankTransaction = setFieldsFromDB(resultSet);
             }
 
         } catch (SQLException e) {
@@ -133,5 +114,21 @@ public class BankTransactionDAO implements DAOInterface<BankTransaction> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public BankTransaction setFieldsFromDB(ResultSet resultSet) throws SQLException {
+        BankTransaction bankTransaction = new BankTransaction();
+
+        bankTransaction.setId(resultSet.getInt("transaction_id"));
+        bankTransaction.setType(resultSet.getString("transaction_type"));
+        bankTransaction.setBankSenderId(resultSet.getInt("transaction_bank_sender_id"));
+        bankTransaction.setBankRecipientId(resultSet.getInt("transaction_bank_recipient_id"));
+        bankTransaction.setAccountSenderId(resultSet.getInt("transaction_account_sender_id"));
+        bankTransaction.setAccountRecipientId(resultSet.getInt("transaction_account_recipient_id"));
+        bankTransaction.setDate(resultSet.getDate("transaction_date"));
+        bankTransaction.setValue(resultSet.getInt("transaction_value"));
+
+        return bankTransaction;
     }
 }

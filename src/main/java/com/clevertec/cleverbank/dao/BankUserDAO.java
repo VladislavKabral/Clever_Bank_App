@@ -39,13 +39,7 @@ public class BankUserDAO implements DAOInterface<BankUser> {
             ResultSet resultSet = statement.executeQuery(SQL);
 
             while(resultSet.next()) {
-                BankUser bankUser = new BankUser();
-
-                bankUser.setId(resultSet.getInt("user_id"));
-                bankUser.setLastname(resultSet.getString("user_lastname"));
-                bankUser.setFirstname(resultSet.getString("user_firstname"));
-                bankUser.setMiddlename(resultSet.getString("user_middlename"));
-
+                BankUser bankUser = setFieldsFromDB(resultSet);
                 bankUsers.add(bankUser);
             }
 
@@ -66,10 +60,7 @@ public class BankUserDAO implements DAOInterface<BankUser> {
             ResultSet resultSet = statement.executeQuery(SQL);
 
             while(resultSet.next()) {
-                bankUser.setId(resultSet.getInt("user_id"));
-                bankUser.setLastname(resultSet.getString("user_lastname"));
-                bankUser.setFirstname(resultSet.getString("user_firstname"));
-                bankUser.setMiddlename(resultSet.getString("user_middlename"));
+                bankUser = setFieldsFromDB(resultSet);
             }
 
         } catch (SQLException e) {
@@ -118,5 +109,17 @@ public class BankUserDAO implements DAOInterface<BankUser> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public BankUser setFieldsFromDB(ResultSet resultSet) throws SQLException {
+        BankUser bankUser = new BankUser();
+
+        bankUser.setId(resultSet.getInt("user_id"));
+        bankUser.setLastname(resultSet.getString("user_lastname"));
+        bankUser.setFirstname(resultSet.getString("user_firstname"));
+        bankUser.setMiddlename(resultSet.getString("user_middlename"));
+
+        return bankUser;
     }
 }

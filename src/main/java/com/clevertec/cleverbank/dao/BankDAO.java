@@ -38,11 +38,7 @@ public class BankDAO implements DAOInterface<Bank> {
             ResultSet resultSet = statement.executeQuery(SQL);
 
             while(resultSet.next()) {
-                Bank bank = new Bank();
-
-                bank.setId(resultSet.getInt("bank_id"));
-                bank.setName(resultSet.getString("bank_name"));
-
+                Bank bank = setFieldsFromDB(resultSet);
                 banks.add(bank);
             }
 
@@ -64,8 +60,7 @@ public class BankDAO implements DAOInterface<Bank> {
             ResultSet resultSet = statement.executeQuery(SQL);
 
             while (resultSet.next()) {
-                bank.setId(resultSet.getInt("bank_id"));
-                bank.setName(resultSet.getString("bank_name"));
+                bank = setFieldsFromDB(resultSet);
             }
 
         } catch (SQLException e) {
@@ -77,7 +72,6 @@ public class BankDAO implements DAOInterface<Bank> {
 
     @Override
     public void save(Bank bank) {
-
         try {
             Statement statement = connection.createStatement();
             String SQL = "INSERT INTO Bank(bank_name) VALUES('" + bank.getName() + "')";
@@ -110,5 +104,15 @@ public class BankDAO implements DAOInterface<Bank> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Bank setFieldsFromDB(ResultSet resultSet) throws SQLException {
+        Bank bank = new Bank();
+
+        bank.setId(resultSet.getInt("bank_id"));
+        bank.setName(resultSet.getString("bank_name"));
+
+        return bank;
     }
 }

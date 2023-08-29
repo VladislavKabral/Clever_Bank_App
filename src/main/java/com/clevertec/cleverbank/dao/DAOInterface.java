@@ -1,5 +1,7 @@
 package com.clevertec.cleverbank.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface DAOInterface<T> {
@@ -13,4 +15,6 @@ public interface DAOInterface<T> {
     void update(int id, T t);
 
     void deleteById(int id);
+
+    T setFieldsFromDB(ResultSet resultSet) throws SQLException;
 }
