@@ -1,16 +1,25 @@
 package com.clevertec.cleverbank.dao;
 
+import com.clevertec.cleverbank.model.bank.BankAccount;
 import com.clevertec.cleverbank.model.bank.BankTransaction;
+import com.clevertec.cleverbank.util.exception.NotEnoughMoneyException;
+import lombok.AllArgsConstructor;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+@AllArgsConstructor
 public class BankTransactionDAO implements DAOInterface<BankTransaction> {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/Clever_Bank_DB";
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "0000";
+
+    private static final String TRANSFER_TO_ACCOUNT_TRANSACTION_TYPE = "Transfer to account";
+
+    private final BankAccountDAO bankAccountDAO;
 
     private static Connection connection;
 
@@ -130,5 +139,42 @@ public class BankTransactionDAO implements DAOInterface<BankTransaction> {
         bankTransaction.setValue(resultSet.getInt("transaction_value"));
 
         return bankTransaction;
+    }
+
+    public void sendMoneyToAccount(String inAccountName, String outAccountName, int value) throws SQLException,
+            NotEnoughMoneyException {
+
+        BankTransaction bankTransaction = new BankTransaction();
+
+        BankAccount inAccount = bankAccountDAO.findByName(inAccountName);
+        if (inAccount.getValue() >= value) {
+            inAccount.setValue(inAccount.getValue() - value);
+        } else {
+            throw new NotEnoughMoneyException("Not enough money in the account");
+        }
+
+        BankAccount outAccount = bankAccountDAO.findByName(outAccountName);
+        outAccount.setValue(outAccount.getValue() + value);
+
+        try {
+            connection.setAutoCommit(false);
+
+            bankAccountDAO.update(inAccount.getId(), inAccount);
+            bankAccountDAO.update(outAccount.getId(), outAccount);
+
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+        }
+
+        bankTransaction.setAccountSenderId(inAccount.getId());
+        bankTransaction.setAccountRecipientId(outAccount.getId());
+        bankTransaction.setBankSenderId(inAccount.getBank_id());
+        bankTransaction.setBankRecipientId(outAccount.getBank_id());
+        bankTransaction.setDate(new Date());
+        bankTransaction.setType(TRANSFER_TO_ACCOUNT_TRANSACTION_TYPE);
+        bankTransaction.setValue(value);
+
+        save(bankTransaction);
     }
 }

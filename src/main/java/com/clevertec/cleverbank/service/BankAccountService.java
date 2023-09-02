@@ -4,7 +4,7 @@ import com.clevertec.cleverbank.dao.*;
 import com.clevertec.cleverbank.model.bank.BankAccount;
 import com.clevertec.cleverbank.model.bank.receipt.BankAccountReceipt;
 import com.clevertec.cleverbank.model.bank.receipt.BankAccountReceiptType;
-import com.clevertec.cleverbank.util.exception.CashWithdrawalException;
+import com.clevertec.cleverbank.util.exception.NotEnoughMoneyException;
 import com.clevertec.cleverbank.util.printer.BankAccountReceiptPrinter;
 import lombok.AllArgsConstructor;
 
@@ -29,7 +29,7 @@ public class BankAccountService {
         bankAccountReceiptPrinter.print(bankAccountReceipt);
     }
 
-    public void getMoneyFromAccount(String accountName, int value) throws CashWithdrawalException {
+    public void getMoneyFromAccount(String accountName, int value) throws NotEnoughMoneyException {
         BankAccount bankAccount = accountDAO.findByName(accountName);
 
         if (bankAccount.getValue() >= value) {
@@ -41,7 +41,7 @@ public class BankAccountService {
             bankAccountReceiptDAO.save(bankAccountReceipt);
             bankAccountReceiptPrinter.print(bankAccountReceipt);
         } else {
-            throw new CashWithdrawalException("Not enough money in the account");
+            throw new NotEnoughMoneyException("Not enough money in the account");
         }
     }
 
