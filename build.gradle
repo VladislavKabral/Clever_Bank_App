@@ -14,6 +14,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
 }
 
 test {
