@@ -15,6 +15,7 @@ dependencies {
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.3'
 }
 
 test {

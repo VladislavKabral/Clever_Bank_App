@@ -23,4 +23,6 @@ public class BankAccountReceipt {
     private int account_id;
 
     private int value;
+
+    public static int RECEIPT_COUNTER = 0;
 }
