@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group 'com.clevertec.cleverbank'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.3'
+}
+
+test {
+    useJUnitPlatform()
+}
