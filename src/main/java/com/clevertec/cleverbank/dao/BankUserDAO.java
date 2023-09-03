@@ -1,20 +1,41 @@
 package com.clevertec.cleverbank.dao;
 
-import com.clevertec.cleverbank.model.bank.Bank;
 import com.clevertec.cleverbank.model.bank.BankUser;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class which represents implementation of DAOInterface for working with bank users
+ *
+ * @author Vladislav Kabral
+ */
 public class BankUserDAO implements DAOInterface<BankUser> {
 
+    /**
+     * Constant which represents URL for connection to database
+     */
     private static final String URL = "jdbc:postgresql://localhost:5432/Clever_Bank_DB";
+
+    /**
+     * Constant which represents username for connection to database
+     */
     private static final String USERNAME = "postgres";
+
+    /**
+     * Constant which represents password for connection to database
+     */
     private static final String PASSWORD = "0000";
 
+    /**
+     * Field which represents connection to database
+     */
     private static Connection connection;
 
+    /*
+     * Initialization of database`s connection
+     */
     static {
         try {
             Class.forName("org.postgresql.Driver");
@@ -29,6 +50,11 @@ public class BankUserDAO implements DAOInterface<BankUser> {
         }
     }
 
+    /**
+     * Method of getting all bank`s users from database
+     *
+     * @return list of bank users
+     */
     @Override
     public List<BankUser> findAll() {
         List<BankUser> bankUsers = new ArrayList<>();
@@ -50,6 +76,12 @@ public class BankUserDAO implements DAOInterface<BankUser> {
         return bankUsers;
     }
 
+    /**
+     * Method for getting bank`s user from database by id
+     *
+     * @param id - id of searching entity
+     * @return bank user
+     */
     @Override
     public BankUser findById(int id) {
         BankUser bankUser = new BankUser();
@@ -70,6 +102,11 @@ public class BankUserDAO implements DAOInterface<BankUser> {
         return bankUser;
     }
 
+    /**
+     * Method for saving bank`s user to database
+     *
+     * @param bankUser - entity to save
+     */
     @Override
     public void save(BankUser bankUser) {
         try {
@@ -84,6 +121,12 @@ public class BankUserDAO implements DAOInterface<BankUser> {
         }
     }
 
+    /**
+     * Method for updating bank`s user in database
+     *
+     * @param id - entity`s id
+     * @param bankUser - entity to update
+     */
     @Override
     public void update(int id, BankUser bankUser) {
         try {
@@ -99,6 +142,11 @@ public class BankUserDAO implements DAOInterface<BankUser> {
         }
     }
 
+    /**
+     * Method for deleting bank`s user from database by id
+     *
+     * @param id - entity`s id
+     */
     @Override
     public void deleteById(int id) {
         try {
@@ -111,6 +159,13 @@ public class BankUserDAO implements DAOInterface<BankUser> {
         }
     }
 
+    /**
+     * Method for setting fields of bank`s user form database
+     *
+     * @param resultSet - entity with data from database
+     * @return bank user with data from database
+     * @throws SQLException
+     */
     @Override
     public BankUser setFieldsFromDB(ResultSet resultSet) throws SQLException {
         BankUser bankUser = new BankUser();

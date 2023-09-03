@@ -6,12 +6,32 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Class which represents implementation of DAOInterface for working with bank receipts
+ *
+ * @author Vladislav Kabral
+ */
 public class BankAccountReceiptDAO implements DAOInterface<BankAccountReceipt> {
 
+    /**
+     * Constant which represents URL for connection to database
+     */
     private static final String URL = "jdbc:postgresql://localhost:5432/Clever_Bank_DB";
+
+    /**
+     * Constant which represents username for connection to database
+     */
     private static final String USERNAME = "postgres";
+
+    /**
+     * Constant which represents password for connection to database
+     */
     private static final String PASSWORD = "0000";
 
+    /*
+     * Initialization of database`s connection
+     */
     private static Connection connection;
 
     static {
@@ -28,6 +48,11 @@ public class BankAccountReceiptDAO implements DAOInterface<BankAccountReceipt> {
         }
     }
 
+    /**
+     * Method of getting all bank`s receipts from database
+     *
+     * @return list of bank`s receipts with account operations
+     */
     @Override
     public List<BankAccountReceipt> findAll() {
         List<BankAccountReceipt> bankAccountReceipts = new ArrayList<>();
@@ -49,6 +74,12 @@ public class BankAccountReceiptDAO implements DAOInterface<BankAccountReceipt> {
         return bankAccountReceipts;
     }
 
+    /**
+     * Method for getting bank`s receipt from database by id
+     *
+     * @param id - id of searching entity
+     * @return bank receipt
+     */
     @Override
     public BankAccountReceipt findById(int id) {
         BankAccountReceipt bankAccountReceipt = new BankAccountReceipt();
@@ -69,6 +100,11 @@ public class BankAccountReceiptDAO implements DAOInterface<BankAccountReceipt> {
         return bankAccountReceipt;
     }
 
+    /**
+     * Method for saving bank`s receipt to database
+     *
+     * @param bankAccountReceipt - entity to save
+     */
     @Override
     public void save(BankAccountReceipt bankAccountReceipt) {
         try {
@@ -84,6 +120,12 @@ public class BankAccountReceiptDAO implements DAOInterface<BankAccountReceipt> {
         }
     }
 
+    /**
+     * Method for updating bank`s receipt in database
+     *
+     * @param id - entity`s id
+     * @param bankAccountReceipt - entity to update
+     */
     @Override
     public void update(int id, BankAccountReceipt bankAccountReceipt) {
         try {
@@ -100,6 +142,11 @@ public class BankAccountReceiptDAO implements DAOInterface<BankAccountReceipt> {
         }
     }
 
+    /**
+     * Method for deleting bank`s receipt in database
+     *
+     * @param id - entity`s id
+     */
     @Override
     public void deleteById(int id) {
         try {
@@ -112,6 +159,13 @@ public class BankAccountReceiptDAO implements DAOInterface<BankAccountReceipt> {
         }
     }
 
+    /**
+     * Method for setting fields of bank`s receipt from database
+     *
+     * @param resultSet - entity with data from database
+     * @return bank`s receipt with data from database
+     * @throws SQLException
+     */
     @Override
     public BankAccountReceipt setFieldsFromDB(ResultSet resultSet) throws SQLException {
         BankAccountReceipt bankAccountReceipt = new BankAccountReceipt();

@@ -6,14 +6,36 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class which represents implementation of DAOInterface for working with banks
+ *
+ * @author Vladislav Kabral
+ */
 public class BankDAO implements DAOInterface<Bank> {
 
+    /**
+     * Constant which represents URL for connection to database
+     */
     private static final String URL = "jdbc:postgresql://localhost:5432/Clever_Bank_DB";
+
+    /**
+     * Constant which represents username for connection to database
+     */
     private static final String USERNAME = "postgres";
+
+    /**
+     * Constant which represents password for connection to database
+     */
     private static final String PASSWORD = "0000";
 
+    /**
+     * Field which represents connection to database
+     */
     private static Connection connection;
 
+    /*
+     * Initialization of database`s connection
+     */
     static {
         try {
             Class.forName("org.postgresql.Driver");
@@ -28,6 +50,11 @@ public class BankDAO implements DAOInterface<Bank> {
         }
     }
 
+    /**
+     * Method for getting all banks from database
+     *
+     * @return list of banks
+     */
     @Override
     public List<Bank> findAll() {
         List<Bank> banks = new ArrayList<>();
@@ -49,6 +76,12 @@ public class BankDAO implements DAOInterface<Bank> {
         return banks;
     }
 
+    /**
+     * Method of getting bank form database by id
+     *
+     * @param id - id of searching entity
+     * @return bank
+     */
     @Override
     public Bank findById(int id) {
 
@@ -70,6 +103,11 @@ public class BankDAO implements DAOInterface<Bank> {
         return bank;
     }
 
+    /**
+     * Method for saving bank to database
+     *
+     * @param bank - entity to save
+     */
     @Override
     public void save(Bank bank) {
         try {
@@ -82,6 +120,12 @@ public class BankDAO implements DAOInterface<Bank> {
         }
     }
 
+    /**
+     * Method for updating bank in database
+     *
+     * @param id - entity`s id
+     * @param bank - entity to update
+     */
     @Override
     public void update(int id, Bank bank) {
         try {
@@ -94,6 +138,11 @@ public class BankDAO implements DAOInterface<Bank> {
         }
     }
 
+    /**
+     * Method for deleting bank from database by id
+     *
+     * @param id - entity`s id
+     */
     @Override
     public void deleteById(int id) {
         try {
@@ -106,6 +155,13 @@ public class BankDAO implements DAOInterface<Bank> {
         }
     }
 
+    /**
+     * Method for setting fields of bank from database
+     *
+     * @param resultSet - entity with data from database
+     * @return bank
+     * @throws SQLException
+     */
     @Override
     public Bank setFieldsFromDB(ResultSet resultSet) throws SQLException {
         Bank bank = new Bank();

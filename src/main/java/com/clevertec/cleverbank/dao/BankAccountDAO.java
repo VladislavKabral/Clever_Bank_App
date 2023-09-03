@@ -6,14 +6,36 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class which represents implementation of DAOInterface for working with bank accounts
+ *
+ * @author Vladislav Kabral
+ */
 public class BankAccountDAO implements DAOInterface<BankAccount> {
 
+    /**
+     * Constant which represents URL for connection to database
+     */
     private static final String URL = "jdbc:postgresql://localhost:5432/Clever_Bank_DB";
+
+    /**
+     * Constant which represents username for connection to database
+     */
     private static final String USERNAME = "postgres";
+
+    /**
+     * Constant which represents password for connection to database
+     */
     private static final String PASSWORD = "0000";
 
+    /**
+     * Field which represents connection to database
+     */
     private static Connection connection;
 
+    /*
+     * Initialization of database`s connection
+     */
     static {
         try {
             Class.forName("org.postgresql.Driver");
@@ -28,12 +50,18 @@ public class BankAccountDAO implements DAOInterface<BankAccount> {
         }
     }
 
+    /**
+     * Method of getting all bank`s accounts from database
+     *
+     * @return list of bank`s accounts
+     */
     @Override
     public List<BankAccount> findAll() {
         List<BankAccount> bankAccounts = new ArrayList<>();
 
         try {
             Statement statement = connection.createStatement();
+
             String SQL = "SELECT * FROM Bank_Account";
             ResultSet resultSet = statement.executeQuery(SQL);
 
@@ -49,6 +77,12 @@ public class BankAccountDAO implements DAOInterface<BankAccount> {
         return bankAccounts;
     }
 
+    /**
+     * Method of getting bank`s account by id
+     *
+     * @param id - id of searching entity
+     * @return bank account
+     */
     @Override
     public BankAccount findById(int id) {
         BankAccount bankAccount = new BankAccount();
@@ -69,6 +103,12 @@ public class BankAccountDAO implements DAOInterface<BankAccount> {
         return bankAccount;
     }
 
+    /**
+     * Method of getting bank`s account from db by name
+     *
+     * @param name - bank`s account name
+     * @return bank account
+     */
     public BankAccount findByName(String name) {
         BankAccount bankAccount = new BankAccount();
 
@@ -88,6 +128,13 @@ public class BankAccountDAO implements DAOInterface<BankAccount> {
         return bankAccount;
     }
 
+    /**
+     * Method for setting fields of bank`s account from database
+     *
+     * @param resultSet - entity with data from database
+     * @return bank account
+     * @throws SQLException
+     */
     @Override
     public BankAccount setFieldsFromDB(ResultSet resultSet) throws SQLException {
         BankAccount bankAccount = new BankAccount();
@@ -102,6 +149,11 @@ public class BankAccountDAO implements DAOInterface<BankAccount> {
         return bankAccount;
     }
 
+    /**
+     * Method for saving bank`s account to database
+     *
+     * @param bankAccount - entity to save
+     */
     @Override
     public void save(BankAccount bankAccount) {
         try {
@@ -117,6 +169,12 @@ public class BankAccountDAO implements DAOInterface<BankAccount> {
         }
     }
 
+    /**
+     * Method for updating bank`s account in database
+     *
+     * @param id - entity`s id
+     * @param bankAccount - entity to update
+     */
     @Override
     public void update(int id, BankAccount bankAccount) {
         try {
@@ -133,6 +191,11 @@ public class BankAccountDAO implements DAOInterface<BankAccount> {
         }
     }
 
+    /**
+     * Method for deleting bank`s account in database
+     *
+     * @param id - entity`s id
+     */
     @Override
     public void deleteById(int id) {
         try {

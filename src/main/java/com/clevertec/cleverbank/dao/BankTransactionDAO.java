@@ -10,19 +10,47 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Class which represents implementation of DAOInterface for working with bank transactions
+ *
+ * @author Vladislav Kabral
+ */
 @AllArgsConstructor
 public class BankTransactionDAO implements DAOInterface<BankTransaction> {
 
+    /**
+     * Constant which represents URL for connection to database
+     */
     private static final String URL = "jdbc:postgresql://localhost:5432/Clever_Bank_DB";
+
+    /**
+     * Constant which represents username for connection to database
+     */
     private static final String USERNAME = "postgres";
+
+    /**
+     * Constant which represents password for connection to database
+     */
     private static final String PASSWORD = "0000";
 
+    /**
+     * Constant which represents name of transaction type
+     */
     private static final String TRANSFER_TO_ACCOUNT_TRANSACTION_TYPE = "Transfer to account";
 
+    /**
+     * Field which represents entity for working with bank`s accounts
+     */
     private final BankAccountDAO bankAccountDAO;
 
+    /**
+     * Field which represents connection to database
+     */
     private static Connection connection;
 
+    /*
+     * Initialization of database`s connection
+     */
     static {
         try {
             Class.forName("org.postgresql.Driver");
@@ -37,6 +65,11 @@ public class BankTransactionDAO implements DAOInterface<BankTransaction> {
         }
     }
 
+    /**
+     * Method of getting all bank`s transactions from database
+     *
+     * @return list of bank transactions
+     */
     @Override
     public List<BankTransaction> findAll() {
         List<BankTransaction> bankTransactions = new ArrayList<>();
@@ -58,6 +91,12 @@ public class BankTransactionDAO implements DAOInterface<BankTransaction> {
         return bankTransactions;
     }
 
+    /**
+     * Method of getting bank`s transaction from database by id
+     *
+     * @param id - id of searching entity
+     * @return bank transaction
+     */
     @Override
     public BankTransaction findById(int id) {
         BankTransaction bankTransaction = new BankTransaction();
@@ -78,6 +117,11 @@ public class BankTransactionDAO implements DAOInterface<BankTransaction> {
         return bankTransaction;
     }
 
+    /**
+     * Method for saving bank`s transaction to database
+     *
+     * @param bankTransaction - entity to save
+     */
     @Override
     public void save(BankTransaction bankTransaction) {
         try {
@@ -95,6 +139,12 @@ public class BankTransactionDAO implements DAOInterface<BankTransaction> {
         }
     }
 
+    /**
+     * Method for updating bank`s transaction in database
+     *
+     * @param id - entity`s id
+     * @param bankTransaction - entity to update
+     */
     @Override
     public void update(int id, BankTransaction bankTransaction) {
         try {
@@ -113,6 +163,11 @@ public class BankTransactionDAO implements DAOInterface<BankTransaction> {
         }
     }
 
+    /**
+     * Method for deleting bank`s transaction from database
+     *
+     * @param id - entity`s id
+     */
     @Override
     public void deleteById(int id) {
         try {
@@ -125,6 +180,13 @@ public class BankTransactionDAO implements DAOInterface<BankTransaction> {
         }
     }
 
+    /**
+     * Method for setting fields of bank`s transaction from database
+     *
+     * @param resultSet - entity with data from database
+     * @return bank transaction with data from database
+     * @throws SQLException
+     */
     @Override
     public BankTransaction setFieldsFromDB(ResultSet resultSet) throws SQLException {
         BankTransaction bankTransaction = new BankTransaction();
@@ -141,6 +203,16 @@ public class BankTransactionDAO implements DAOInterface<BankTransaction> {
         return bankTransaction;
     }
 
+
+    /**
+     * Method for sending money from one account to another
+     *
+     * @param inAccountName - name of account-sender
+     * @param outAccountName - name of account-recipient
+     * @param value - value of transaction
+     * @throws SQLException
+     * @throws NotEnoughMoneyException - throws, if account-sender has not enough money for transfer
+     */
     public void sendMoneyToAccount(String inAccountName, String outAccountName, int value) throws SQLException,
             NotEnoughMoneyException {
 
